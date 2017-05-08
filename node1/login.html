@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>登录界面</title>
+</head>
+<style type="text/css">
+body{
+	-webkit-font-smoothing: antialiased;
+  	font-family: Arial, Helvetica, sans-serif;
+}
+*{
+	margin:0;
+	padding: 0;
+}
+#main{
+	display: table;
+	width: 100%;
+	height: 100%;
+	position: absolute;
+}
+#loginScreen{
+	display: table-cell;
+	vertical-align: middle;
+	text-align: center;
+}
+#loginScreen>div{
+	display: inline-block;
+}
+.loginScreen_head{
+	margin-bottom: 20px;
+} 
+.loginScreen_head span{
+	font-size: 18px;
+	font-weight: bold;
+}
+.loginScreen_main input{
+	height: 38px;
+	line-height: 40px;
+	padding: 0 10px;
+	border-radius: 10px; 
+	outline: none;
+	border: 1px solid #666;
+}
+.loginScreen_main>input{
+	display: block;
+	width: 230px;
+	margin-bottom: 20px;
+	
+}
+#code input{
+	width: 100px;
+	display: inline-block;
+	float: left;
+}
+#vcode{
+	width: 100px;
+	border: 1px solid #eee;
+	height: 40px;
+	line-height: 40px;
+	float: right;
+	font-family:Arial;  
+    font-style:italic;  
+    font-weight:bold;
+    letter-spacing:2px;  
+    color:blue;
+    background: rgb(211,211,211);
+    cursor:pointer;
+}
+.loginScreen_footer{
+	margin-top: 20px;
+}
+.loginScreen_footer:after,#code:after{
+	width: 0;
+	height: 0;
+	clear: both;
+	display: block;
+	content: "";
+}
+.loginScreen_footer span{
+	width: 45%;
+	height: 30px;
+	line-height: 30px;
+	cursor: pointer;
+	text-decoration: none;
+	float: left;
+	margin-left: 10%;
+}
+.loginScreen_footer span:first-child{
+	margin-left: 0;
+}
+.loginScreen_footer span a{
+	display: block;
+	border: 1px solid #eee;
+	border-radius: 4px;
+	color: #666;
+}
+input:-webkit-autofill,textarea:-webkit-autofill,select:-webkit-autofill{
+	-webkit-box-shadow: 0 0 0 1000px white inset;
+}
+
+#tips{
+	position: absolute;
+	width: 100%;
+	text-align: center;
+}
+#tips>div:before{
+	content: "";
+	width: 1px;
+	height: 20px;
+	display: block;
+	clear: both;
+	background: #666;
+	margin: 0 auto;
+}
+#tipscontent{
+	height: 40px;
+	line-height: 40px;
+	border: 1px solid #666;
+	padding: 0 30px;
+	border-radius: 10px;
+	display: inline-block;
+}
+</style>
+<body>
+<input hidden="hidden" type="hidden" id="cde" value="321">
+<div id="head">
+	
+</div>
+
+<div id="main">
+	<div id="loginScreen">
+		<div>
+			<div class="loginScreen_head">
+				<span class="title">登录界面</span>
+			</div>
+			<div class="loginScreen_main">
+				<input id="userName" type="text" placeholder="请输入用户名" />
+				<input id="passWord" type="password" placeholder="请输入密码" />
+				<div id="code">
+					<input id="confcode" type="text" placeholder="验证码" />
+					<span id="vcode" onclick="createCode()"></span>
+					<!-- <img src="/a" style="width:100px;height:100px;" alt=""> -->
+				</div>
+				
+
+			</div>
+			<div class="loginScreen_footer">
+				<span id="loginBtn"><a onclick="loginchecked()">登录</a></span>
+				<span id="registBtn"><a href="/regist">注册</a></span>
+			</div>
+		</div>
+	</div>
+</div>
+<div id="footer">
+	
+</div>
+</body>
+
+<script type="text/javascript">
+createTips();
+function createTips(){
+	var createTip = document.createElement("div");
+	createTip.id="tips";
+	document.body.appendChild(createTip);
+	var createContain = document.createElement("div");
+	var createContent = document.createElement("span");
+	createTip.appendChild(createContain);
+	createContain.appendChild(createContent);
+	createContent.id="tipscontent";
+	createTip.style.marginTop=-createTip.offsetHeight+"px";
+	createTip.style.display="none";
+
+}
+function tipscondition(text){
+	var tips = document.getElementById("tips");
+	var tipscontent = document.getElementById("tipscontent");
+	tipscontent.innerHTML = text;
+	if(tips.style.display=="none"){
+		tips.style.display="block";
+		setTimeout(function(){
+			tips.style.transition="0.4s";
+			tips.style.marginTop="0px";
+			setTimeout(function(){
+				tips.style.marginTop=-tips.offsetHeight+"px";
+				tips.style.transition="0.2s";
+				setTimeout(function(){
+					tips.style.display="none";
+					tips.style.transition="";
+				}, 200);
+			}, 2000);
+		}, 10);
+	}
+}
+function loginchecked(){
+	var userName = document.getElementById("userName");
+	var passWord = document.getElementById("passWord");
+	var confcode = document.getElementById("confcode");
+	var vcode = document.getElementById("vcode");
+	if(userName.value==""){
+		tipscondition("用户名不能为空");
+		userName.value = "";
+		passWord.value = "";
+        confcode.value = "";
+	}else if(passWord.value==""){
+		tipscondition("密码不能为空");
+		userName.value = "";
+		passWord.value = "";
+        confcode.value = "";
+	}else if(confcode.value.toUpperCase() != vcode.innerHTML){
+		tipscondition("验证码输入错误！@_@"); //则弹出验证码输入错误
+		createCode();//刷新验证码 
+		userName.value = "";
+		passWord.value = "";
+        confcode.value = "";//清空文本框  
+	}else if(userName.value!="" && passWord.value!=""){
+		$.ajax({
+			url: '/check',
+			type: 'POST',
+			async:false,
+			data:'userName='+userName.value+'&passWord='+passWord.value,
+			success:function(msg){
+				switch (msg) {
+					case "该用户已登录":
+						// statements_1
+						tipscondition("该用户已登录");
+						userName.value = "";
+						passWord.value = "";
+				        confcode.value = "";
+						break;
+					case "账号密码错误":
+						// statements_1
+						tipscondition("账号密码错误");
+						userName.value = "";
+						passWord.value = "";
+				        confcode.value = "";
+						break;
+					case "通过":
+						// statements_1
+						window.location.href="/index?userName="+userName.value;
+						break;
+					default:
+						// statements_def
+						break;
+				}
+			}
+		})
+	}
+}
+
+function createCode(){
+	var vcode = document.getElementById("vcode");
+	var code="";
+	var codelen=4;
+	var random=[0,1,2,3,4,5,6,7,8,9,"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"];
+	for(var i=0;i<codelen;i++){
+		code+=random[Math.floor(Math.random()*36)];
+	}
+	vcode.innerHTML=code;
+}
+createCode();
+
+
+</script>
+</html>

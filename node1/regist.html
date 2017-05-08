@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>注册界面</title>
+	<script type="text/javascript" src="jquery.min.js"></script>
+</head>
+<style type="text/css">
+body{
+	-webkit-font-smoothing: antialiased;
+  	font-family: Arial, Helvetica, sans-serif;
+}
+*{
+	margin:0;
+	padding: 0;
+}
+#main{
+	display: table;
+	width: 100%;
+	height: 100%;
+	position: absolute;
+}
+#registScreen{
+	display: table-cell;
+	vertical-align: middle;
+	text-align: center;
+}
+#registScreen>div{
+	display: inline-block;
+}
+.registScreen_head{
+	margin-bottom: 20px;
+}
+.registScreen_head span{
+	font-size: 18px;
+	font-weight: bold;
+}
+.registScreen_main input{
+	display: block;
+	width: 230px;
+	margin-bottom: 20px;
+	height: 30px;
+	line-height: 30px;
+	padding: 0 10px;
+	border-radius: 4px;
+	outline: none;
+	border: 1px solid #666;
+}
+.registScreen_footer:after{
+	width: 0;
+	height: 0;
+	clear: both;
+	display: block;
+	content: "";
+}
+.registScreen_footer a{
+	width: 45%;
+	height: 30px;
+	line-height: 30px;
+	cursor: pointer;
+	text-decoration: none;
+	float: left;
+	margin-left: 10%;
+	color: #666;
+}
+.registScreen_footer a:first-child{
+	margin-left: 0;
+}
+.registScreen_footer a span{
+	display: block;
+	border: 1px solid #eee;
+	border-radius: 4px;
+}
+</style>
+<body>
+<div id="head">
+	
+</div>
+<div id="main">
+	<div id="registScreen">
+		<div>
+			<div class="registScreen_head">
+				<span class="title">注册界面</span>
+			</div>
+			<div class="registScreen_main">
+				<input id="userName" type="text" placeholder="请输入用户名" />
+				<input id="passWord" type="password" placeholder="请输入密码" />
+			</div>
+			<div class="registScreen_footer">
+				<a id="loginBtn" href="/login"><span>登录</span></a>
+				<a id="registBtn" onclick="regist()"><span>注册</span></a>
+			</div>
+		</div>
+	</div>
+</div>
+<div id="footer">
+	
+</div>
+</body>
+<script type="text/javascript">
+function regist(){
+	var userName = document.getElementById("userName");
+	var passWord = document.getElementById("passWord");
+	var name = document.getElementById("name");
+	if(userName.value==""){
+		alert("用户名不能为空");
+	}else if(passWord.value==""){
+		alert("密码不能为空");
+	}else if(userName.value!="" && passWord.value!=""){
+		$.ajax({
+			url: '/add_user',
+			type: 'POST',
+			data:'userName='+userName.value+'&passWord='+passWord.value+'&name='+name.value,
+			success:function(msg){
+				alert(msg);
+				window.location.href="/regist";
+			}
+		})
+	}
+}
+</script>
+</html>

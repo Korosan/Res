@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>首页</title>
+	<script type="text/javascript" src="jquery.min.js"></script>
+</head>
+<body>
+<div id="head">
+	<div class="head_contain">
+		<span class="logo"></span>
+		<span class="index_title"></span>
+		<span id="logininfo"></span>
+		<span class="logout"></span>
+	</div>
+</div>
+<div id="main">
+	<div class="main_contain">
+		
+	</div>
+</div>
+<div id="footer">
+	
+</div>
+
+
+</body>
+<script type="text/javascript">
+
+
+$.ajax({
+	type: 'POST',
+	url: '/getUserInfo',
+	data:'userName='+getUrlParam("userName"),
+	success:function(msg){
+		if(!msg){
+			window.location.href="/login";
+		}
+		var logininfo = document.getElementById("logininfo");
+		logininfo.innerHTML="用户名:"+msg.name;
+	}
+});
+
+
+
+
+function getUrlParam(param){
+	if(window.location.search.length!=0){
+		var src = window.location.search.substring(1);
+		var str = src.split("&");
+		for(var i=0;i<str.length;i++){
+			if(param==str[i].substring(0,str[i].indexOf("="))){
+				return str[i].substring(str[i].indexOf("=")+1);
+			}
+		}
+	}
+}
+window.onbeforeunload = onbeforeunload_handler;
+window.onunload = onunload_handler;
+    function onbeforeunload_handler(){ 
+        /*var warning="确认退出?";
+        return warning;   */
+    }
+    function onunload_handler(){   
+        $.ajax({
+		   type: "POST",
+		   url: "/logout",
+		   data:'userName='+getUrlParam("userName"),
+		});     
+    }   
+</script>
+</html>

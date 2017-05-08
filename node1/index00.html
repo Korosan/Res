@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>node1</title>
+	<script type="text/javascript" src="jquery.min.js"></script>
+</head>
+<style type="text/css">
+#main{
+	width: 100%;
+}
+#main:after{
+	content: "";
+	width: 0;
+	height: 0;
+	clear: both;
+	display: block;
+}
+#wrap{
+	width: 50%;
+	float: left;
+	margin-left: 25%;
+	margin-top:100px;
+	border: 1px solid #f0f0f0;
+
+}
+</style>
+<body>
+<div id="header">
+	
+</div>
+<div id="main">
+	<div id="wrap">
+		<a href="/del_user">哈哈哈哈</a>
+
+	</div>
+</div>
+<div id="footer">
+	
+</div>
+
+
+</body>
+<script type="text/javascript">
+$.ajax({
+	type: "POST",
+	url: "/add_user",
+	data:"userName=123&abc=123",
+
+	success:function(msg){
+		alert(msg);
+	}
+});  
+/*window.onbeforeunload = onbeforeunload_handler;
+window.onunload = onunload_handler;
+    function onbeforeunload_handler(){   
+    	$("#wrap a").eq(0).html("退出");
+        var warning="确认退出?";
+
+        $.ajax({
+		   type: "POST",
+		   url: "/del_user",		
+		   data:"",
+		});      
+        return warning;   
+    }   
+       
+    function onunload_handler(){   
+        var warning="谢谢光临";
+
+        alert(warning);   
+    }   */
+</script>
+</html>

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>练习题1</title>
+</head>
+<body>
+<div id="div1" style="123">
+	<div id="div2"></div>
+</div>
+<script type="text/javascript">
+var div1 = document.getElementById("div1");
+console.log(div1.parent);
+div1.removeAttribute("style");
+/*
+window.onload=function(){
+	var s1 = new Sel("div1");
+	s1.add('0',['1','2','3']);
+	s1.add('0_0',['1_1','1_2','1_3']);
+	s1.add('0_0_0',['1_1_1','1_2_1','1_3_1']);
+	s1.add('0_1',['2_1','2_2','3_3']);
+	s1.add('0_0_0',['1_1_1','1_2_1','1_3_1']);
+	s1.add('0_2',['3_1','3_2','3_3']);
+	s1.add('0_0_0',['1_1_1','1_2_1','1_3_1']);
+	s1.init(3);
+}
+function Sel(id){
+	this.oParent = document.getElementById(id);
+	this.data={};
+
+}
+Sel.prototype = {
+	init:function(num){
+		for(var i=1;i<=num;i++){
+			var oSel = document.createElement("select");
+			var oPt = document.createElement("option");
+			oPt.innerHTML="默认";
+			oSel.appendChild(oPt);
+			this.oParent.appendChild(oSel);
+		}
+	},
+	add:function(key,value){
+		this.data[key]=value;
+	}
+}
+*/
+/*var str="border-bottom-color";
+console.log(str.replace("b","B"));
+var arr=str.split("-");
+for(var i=1;i<arr.length;i++){
+	arr[i]=arr[i].substring(0,1).toUpperCase()+arr[i].substring(1);
+}
+alert(arr.join(""));*/
+
+/*var str="border-bottom-color";
+str = str.replace(/-(\w)/g,function($0,$1){
+	return $1.toUpperCase();
+})
+console.log(str);*/
+
+
+
+/*var str="sdjksfssscfssdd";
+var json={};
+var num=0;
+for(var i=0;i<str.length;i++){
+	if(!json[str[i]]){
+		json[str[i]]=1;
+	}else{
+		json[str[i]]++;
+	}
+}
+for(var k in json){
+	if(num<json[k]){
+		num=json[k];
+		var value=k;
+	}
+}
+console.log("出现最多的字符是:"+value+',出现次数是:'+num);*/
+/*var str="s123djksfssscf431ssdd";
+var arr=[];
+str.replace(/(\d+)(?=\D)/g,function($0,$1){
+	arr.push(Number($0));
+});
+console.log(arr);*/
+
+/*var str="s123djksfssscf431ssdd";
+var arr=[];
+var newStr="";
+for(var i=0;i<str.length;i++){
+	if(Number(str[i])){
+		newStr+=str[i];
+	}else{
+		if(newStr!=""){
+			arr.push(Number(newStr));
+			newStr="";
+		}
+	}
+}
+console.log(arr);*/
+
+/*
+var str="3562123761";
+var key=3;
+var arr=[];
+var newstr="";
+var num = Math.floor(str.length/key);
+var remainder = str.length%key;
+if(remainder!=0){
+	//arr.push(str.substring(0,remainder));
+	newstr+=str.substring(0,remainder)+",";
+}
+for(var i=0;i<num;i++){
+	//arr.push(str.substring(remainder+i*key,remainder+(i+1)*key));
+	newstr+=str.substring(remainder+i*key,remainder+(i+1)*key)+",";
+}
+console.log(newstr.substring(0,newstr.length-1));*/
+
+
+/*var str = "3562123761";
+var re = /(?=(?!\b)(\d{3})+$)/g;
+var arr=[];
+str = str.replace(re,",");
+alert(str);*/
+</script>
+</body>
+</html>

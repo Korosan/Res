@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>时钟</title>
+</head>
+<style type="text/css">
+*{
+	margin:0;
+	padding: 0;
+}
+li{
+	list-style: none;
+}
+#main{
+	width: 200px;
+	height: 200px;
+	position: absolute;
+}
+#clock{
+	display: table;
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	top: 0;
+}
+#clockHour li{
+	position: absolute;
+	width: 20px;
+	left: 90px;
+	transform-origin:10px 100px;
+}
+#clockHour li span{
+	display: block;
+	height: 20px;
+	text-align: center;
+	line-height: 20px;
+	font-size: 14px;
+}
+#clockHour li span.clockline{
+	position: absolute;
+	width: 2px;
+	height: 5px;
+	left: 9px;
+	background: black;
+	top: 0;
+}
+#clockMinute li{
+	position: absolute;
+	background: black;
+	width: 2px;
+	height: 2px;
+	left: 99px;
+	transform-origin:1px 100px;
+}
+#clockhands{
+	width: 6px;
+	height: 6px;
+	position: absolute;
+	left: 96px;
+	top: 96px;
+	border: 1px solid black;
+	border-radius: 10px;
+}
+#clockhands li{
+	background: black;
+	position: absolute;
+}
+#clockHours_hand{
+	width: 4px;
+	height: 40px;
+	left: 1px;
+	margin-top: -40px;
+	transform-origin:2px 43px;
+
+}
+#clockMinutes_hand{
+	width: 4px;
+	height: 80px;
+	left: 1px;
+	margin-top: -80px;
+	transform-origin:2px 83px;
+}
+#clockSeconds_hand{
+	width: 2px;
+	height: 110px;
+	left: 2px;
+	margin-top: -90px;
+	transform-origin:1px 93px;
+}
+#input{
+	position: absolute;
+	z-index: 1000;
+}
+</style>
+<body>
+<div id="main">
+	<div id="clock">
+		
+	</div>
+</div>
+<script type="text/javascript">
+
+
+
+clockState={
+	clockContain:{
+		width:"200px",
+		height:"200px",
+		border:"1px solid black",
+		borderRadius:"100px",
+		margin:"0 auto",
+		position:"relative",
+		overflow:"hidden",
+	}
+}
+function clock(id){
+	var clock = document.getElementById(id);
+	var This=this;
+	this.createClock = function(){
+		var clock_div = document.createElement("div");
+		clock_div.style.display="table-cell";
+		clock_div.style.verticalAlign="middle";
+		clock.appendChild(clock_div);
+		var clock_div_div = document.createElement("div");
+		clock_div_div.id="clock_contain";
+		for(var key in clockState.clockContain){
+			clock_div_div.style[key] = clockState.clockContain[key];
+
+		}
+		clock_div.appendChild(clock_div_div);
+
+		//时(刻度+刻数)
+		var clockHour = document.createElement("ul");
+		clockHour.id="clockHour";
+		clock_div_div.appendChild(clockHour);
+		var text="";
+		for(var i=1;i<=12;i++){
+			text+="<li><span>"+i+"</span><span class='clockline'></span></li>"
+		}
+		clockHour.innerHTML=text;
+		//分(刻度)
+		var clockMinute = document.createElement("ul");
+		text="";
+		clockMinute.id="clockMinute";
+		clock_div_div.appendChild(clockMinute);
+		for(var i=0;i<48;i++){
+			text+="<li></li>";
+		}
+		clockMinute.innerHTML=text;
+		//时针
+		var clockhands = document.createElement("ul");
+		text="";
+		clockhands.id="clockhands";
+		clock_div_div.appendChild(clockhands);
+		text+="<li id='clockHours_hand'></li>";
+		text+="<li id='clockMinutes_hand'></li>";
+		text+="<li id='clockSeconds_hand'></li>";
+		clockhands.innerHTML=text;
+	}
+	this.scale = function(){
+		var clockHour = document.getElementById("clockHour");
+		var aLi = clockHour.getElementsByTagName("li");
+		for(var i=0;i<aLi.length;i++){
+			var oSpan = aLi[i].getElementsByTagName("span")[0];
+			aLi[i].style.transform="rotate("+(i+1)*30+"deg)";
+			oSpan.style.transform="rotate("+(aLi.length-(i+1))*30+"deg)";
+		}
+
+		var clockMinute = document.getElementById("clockMinute");
+		var aLi = clockMinute.getElementsByTagName("li");
+		var num=0;
+		for(var i=0;i<aLi.length;i++){
+			if(i%4==0){
+				aLi[i].style.transform="rotate("+(Number(num*30)+6)+"deg)";
+				num++;
+			}else{
+				aLi[i].style.transform="rotate("+(Number(aLi[i-1].style.transform.replace(/\D+/g,""))+6)+"deg)";
+			}
+		}
+	}
+	this.setTime = function(time){
+		var clockhands =document.getElementById("clockhands");
+		var aLi = clockhands.getElementsByTagName("li");
+		this.timeArr = time.split(":");
+		if(this.timeArr.length!=3){
+			return false;
+		}
+		this.Timedeg =[];
+		this.Timedeg.push(this.timeArr[0]*30+this.timeArr[1]*0.5);
+		this.Timedeg.push(this.timeArr[1]*6);
+		this.Timedeg.push(this.timeArr[2]*6);
+		for(var i=0;i<aLi.length;i++){
+			aLi[i].style.transform = "rotate("+this.Timedeg[i]+"deg)";
+		}
+	}
+	this.init = function(){
+		this.createClock();
+		this.scale();
+		/*var This=this;
+		setInterval(function(){
+			This.setTime(new Date().getHours()+":"+new Date().getMinutes()+":"+new Date().getSeconds());
+		}, 1000);*/
+	}
+	this.run = function(){
+		this.interval=setInterval(function(){
+			This.timeArr[2]++;
+			if(This.timeArr[2]==60){
+				This.timeArr[1]++;
+				This.timeArr[2]=0;
+				if(This.timeArr[1]==60){
+					This.timeArr[0]++;
+					This.timeArr[1]=0;
+				}
+			}
+			var time=This.timeArr.join(":");
+			console.log(time);
+			This.setTime(time);
+		},1000);
+	}
+}
+
+var clock = new clock("clock");
+clock.init();
+clock.setTime(new Date().getHours()+":"+new Date().getMinutes()+":"+new Date().getSeconds());
+clock.run();
+
+</script>
+</body>
+</html>
